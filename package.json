@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/cmd-mish/electricity-price/issues"
   },
-  "homepage": "https://github.com/cmd-mish/electricity-price#readme"
+  "homepage": "https://github.com/cmd-mish/electricity-price#readme",
+  "dependencies": {
+    "date-fns": "^2.30.0",
+    "date-fns-tz": "^2.0.0"
+  }
 }
