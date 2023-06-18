@@ -1,0 +1,5 @@
+# Package
+*.zip
+
+# MAC OS
+.DS_Store
