@@ -21,20 +21,19 @@ export const handler = async () => {
             const json = await data.json();
             const recordForCurrentHour = json.find(item => item.timeStampHour === `${currentHour}:00`);
 
-            if (recordForCurrentHour) {
-                const { value, unit } = recordForCurrentHour;
+            const { value, unit } = recordForCurrentHour;
 
-                const calculatedValue = (value * (1 + taxValue) + marginValue).toFixed(2);
-                const valueResponse = `${calculatedValue} ${unit}`;
-                return {
-                    statusCode: 200,
-                    headers,
-                    body: JSON.stringify({
-                        ...recordForCurrentHour,
-                        currentHourValue: valueResponse,
-                    }),
-                };
-            }
+            const calculatedValue = (value * (1 + taxValue) + marginValue).toFixed(2);
+            const valueResponse = `${calculatedValue} ${unit}`;
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    ...recordForCurrentHour,
+                    currentHourValue: valueResponse,
+                }),
+            };
+
         }
         return { statusCode: 500, headers, body: 'Something went wrong' };
     }

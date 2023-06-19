@@ -12,7 +12,7 @@ jobs:
         steps:
             - name: Checkout version control
               uses: actions/checkout@v3
-            - name: npm install
+            - name: Install dependencies
               run: npm install
             - name: Package Lambda
               uses: montudor/action-zip@v1
