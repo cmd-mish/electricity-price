@@ -1,0 +1,30 @@
+name: Deploy Lambda
+
+on:
+    push:
+      branches:
+        - master
+
+jobs:
+    deploy-lambda:
+        name: Deploy Lambda
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout version control
+              uses: actions/checkout@v3
+            - name: npm install
+              run: npm install
+            - name: Package Lambda
+              uses: montudor/action-zip@v1
+              with:
+                  args: zip -r function.zip .
+            - name: Deploy Lambda
+              uses: appleboy/lambda-action@v0.1.9
+              with:
+                  aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws_region: ${{ secrets.AWS_REGION }}
+                  function_name: electricityPrice
+                  zip_file: function.zip
+                  dry_run: true
+            
