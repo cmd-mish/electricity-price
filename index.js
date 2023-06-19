@@ -33,7 +33,7 @@ export const handler = async () => {
                         ...recordForCurrentHour,
                         currentHourValue: valueResponse,
                         ping: 'pong',
-                    })
+                    }),
                 };
             }
         }
