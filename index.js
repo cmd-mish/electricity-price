@@ -3,6 +3,10 @@ import { utcToZonedTime } from 'date-fns-tz';
 
 // eslint-disable-next-line no-undef
 const ENDPOINT = process.env.ENDPOINT;
+const taxValue = 0.24;
+const marginValue = 0.5;
+
+const headers = { 'content-type': 'application/json' };
 
 export const handler = async () => {
     try {
@@ -18,20 +22,21 @@ export const handler = async () => {
             const recordForCurrentHour = json.find(item => item.timeStampHour === `${currentHour}:00`);
 
             if (recordForCurrentHour) {
-                const { timeStampHour, value, timeStampDay, unit } = recordForCurrentHour;
+                const { value, unit } = recordForCurrentHour;
 
-                const valueResponse = `${value} ${unit}`;
+                const calculatedValue = (value * (1 + taxValue) + marginValue).toFixed(2);
+                const valueResponse = `${calculatedValue} ${unit}`;
                 return {
                     statusCode: 200,
+                    headers,
                     body: JSON.stringify({
-                        timeStampHour,
-                        timeStampDay,
-                        value: valueResponse
+                        ...recordForCurrentHour,
+                        currentHourValue: valueResponse,
                     })
                 };
             }
         }
-        return { statusCode: 500, body: 'Something went wrong' };
+        return { statusCode: 500, headers, body: 'Something went wrong' };
     }
     catch (e) {
         console.error(e);
