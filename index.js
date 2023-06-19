@@ -5,11 +5,11 @@ const ENDPOINT = process.env.ENDPOINT;
 
 export const handler = async (event) => {
     try {
-        const now = new Date();
-        const date = format(now, 'yyyy-MM-dd');
-        const currentHour = utcToZonedTime(now, 'Europe/Helsinki').getHours();
+        const today = utcToZonedTime(new Date(), 'Europe/Helsinki');
+        const currentDate = format(today, 'yyyy-MM-dd');
+        const currentHour = format(today, 'HH');
 
-        const URI = `${ENDPOINT}/${date}/${date}?lang=en`;
+        const URI = `${ENDPOINT}/${currentDate}/${currentDate}?lang=en`;
         const data = await fetch(URI);
 
         if (data.ok) {
