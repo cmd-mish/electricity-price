@@ -1,9 +1,10 @@
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 
+// eslint-disable-next-line no-undef
 const ENDPOINT = process.env.ENDPOINT;
 
-export const handler = async (event) => {
+export const handler = async () => {
     try {
         const today = utcToZonedTime(new Date(), 'Europe/Helsinki');
         const currentDate = format(today, 'yyyy-MM-dd');
@@ -14,8 +15,21 @@ export const handler = async (event) => {
 
         if (data.ok) {
             const json = await data.json();
-            const output = json.find(item => item.timeStampHour === `${currentHour}:00`);
-            return output;
+            const recordForCurrentHour = json.find(item => item.timeStampHour === `${currentHour}:00`);
+
+            if (recordForCurrentHour) {
+                const { timeStampHour, value, timeStampDay, unit } = recordForCurrentHour;
+
+                const valueResponse = `${value} ${unit}`;
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify({
+                        timeStampHour,
+                        timeStampDay,
+                        value: valueResponse
+                    })
+                };
+            }
         }
         return { statusCode: 500, body: 'Something went wrong' };
     }
