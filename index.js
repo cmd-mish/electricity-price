@@ -30,6 +30,8 @@ export const handler = async () => {
                 headers,
                 body: JSON.stringify({
                     ...recordForCurrentHour,
+                    taxValue,
+                    marginValue,
                     currentHourValue: valueResponse,
                 }),
             };
